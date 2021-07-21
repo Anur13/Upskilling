@@ -9,11 +9,6 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
     private ArrayList<Entry<K, V>>[] buckets = new ArrayList[capacity];
     private int size;
 
-    public HashMap() {
-        for (int i = 0; i < capacity; i++) {
-            buckets[i] = new ArrayList<>();
-        }
-    }
 
     @Override
     public V put(K key, V value) {
@@ -89,27 +84,25 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
         if (capacity * loadFactor <= size) {
             buckets = Arrays.copyOf(buckets, (int) (capacity * 1.5));
             capacity = (int) (capacity * 1.5);
-            for (int i = size + 1; i < buckets.length; i++) {
-                buckets[i] = new ArrayList<>();
-            }
             reArrangeMaps();
         }
     }
 
     private void reArrangeMaps() {
-        ArrayList<Entry<K, V>> buffer = new ArrayList<>();
-
+        ArrayList<Entry<K, V>>[] newBuckets = new ArrayList[capacity];
+//
         for (ArrayList<Entry<K, V>> bucket : buckets) {
-            for (int i = 0; i < bucket.size(); i++) {
-                Entry<K, V> targetEntry = bucket.get(i);
-                ArrayList<Entry<K, V>> targetBucket = getBucketByKey(targetEntry.key);
-                buffer.add(targetEntry);
-                targetBucket.add(targetEntry);
-                if (buffer.contains(targetEntry)) {
-                   targetBucket.remove(targetEntry);
+            if (bucket != null) {
+                for (int i = 0; i < bucket.size(); i++) {
+                    Entry<K, V> targetEntry = bucket.get(i);
+                    ArrayList<Entry<K, V>> targetBucket = getBucketByKey(targetEntry.key, newBuckets);
+                    targetBucket.add(targetEntry);
                 }
             }
+
         }
+        buckets = newBuckets;
+        System.out.println(Arrays.toString(buckets));
     }
 
 //    @Override
@@ -140,7 +133,14 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
 //    }
 
     private ArrayList<Entry<K, V>> getBucketByKey(K key) {
-        return buckets[key.hashCode() % capacity];
+        return getBucketByKey(key, buckets);
+    }
+
+    private ArrayList<Entry<K, V>> getBucketByKey(K key, ArrayList<Entry<K, V>>[] bucketsArray) {
+        if (bucketsArray[Math.abs(key.hashCode() % capacity)] == null) {
+            bucketsArray[Math.abs(key.hashCode() % capacity)] = new ArrayList<>();
+        }
+        return bucketsArray[Math.abs(key.hashCode() % capacity)];
     }
 
 
