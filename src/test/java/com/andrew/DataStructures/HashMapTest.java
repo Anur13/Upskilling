@@ -3,6 +3,9 @@ package com.andrew.DataStructures;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class HashMapTest {
@@ -14,32 +17,27 @@ class HashMapTest {
     }
 
     @Test
-    @DisplayName("Test Put On Existing Key")
-    void testPutOnExistingKey() {
-        hashMap.put(100, "test");
-        assertEquals("test", hashMap.put(100, "test2"));
+    void testGet() {
+        hashMap.put(100, "100");
+        assertEquals("100", hashMap.get(100));
+        hashMap.put(135, "13");
+        assertEquals("13", hashMap.get(135));
     }
 
     @Test
-    void testGet() {
-
-
-        hashMap.put(100, "100");
-//        assertEquals("100", hashMap.get(100));
+    void testGrowth()  {
+        hashMap.put(15, "13");
+        hashMap.put(125, "13");
         hashMap.put(135, "13");
-//        assertEquals("13", hashMap.get(13));
-        hashMap.put(1, "13");
+        assertEquals(4, hashMap.capacity());
 
-        hashMap.put(16, "13");
-        hashMap.put(13, "13");
-        hashMap.put(134, "13");
-//
-//        hashMap.put(18, "13");
-//        hashMap.put(15, "13");        hashMap.put(14, "13");
-//        hashMap.put(184, "13");
-//        hashMap.put(1664, "13");
+        hashMap.put(155, "13");
+        assertEquals(6, hashMap.capacity());
 
+        hashMap.put(1515, "13");
+        hashMap.put(1115, "13");
 
+        assertEquals(9, hashMap.capacity());
 
     }
 
@@ -58,7 +56,14 @@ class HashMapTest {
     }
 
     @Test
-    void testSize(){
-        assertEquals(16,hashMap.size());
+    void testSize() {
+        hashMap.put(135, "13");
+        hashMap.put(125, "13");
+        assertEquals(2, hashMap.size());
+        hashMap.put(125, "13");
+        assertEquals(2, hashMap.size());
+        hashMap.put(115, "13");
+        assertEquals(3, hashMap.size());
+
     }
 }

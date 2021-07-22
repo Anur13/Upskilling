@@ -6,9 +6,9 @@ import java.util.function.Consumer;
 public class HashMap<K, V> implements Map<K, V>, Iterable {
     private int capacity = 4;
     private final double loadFactor = 0.75;
+    private final double growthFactor = 1.5;
     private ArrayList<Entry<K, V>>[] buckets = new ArrayList[capacity];
     private int size;
-
 
     @Override
     public V put(K key, V value) {
@@ -79,22 +79,23 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
         return size;
     }
 
+    public int capacity() {
+        return capacity;
+    }
 
     private void ensureCapacity() {
         if (capacity * loadFactor <= size) {
-            buckets = Arrays.copyOf(buckets, (int) (capacity * 1.5));
-            capacity = (int) (capacity * 1.5);
+            capacity = (int) (capacity * growthFactor);
+            buckets = Arrays.copyOf(buckets, (int) (capacity));
             reArrangeMaps();
         }
     }
 
     private void reArrangeMaps() {
         ArrayList<Entry<K, V>>[] newBuckets = new ArrayList[capacity];
-//
         for (ArrayList<Entry<K, V>> bucket : buckets) {
             if (bucket != null) {
-                for (int i = 0; i < bucket.size(); i++) {
-                    Entry<K, V> targetEntry = bucket.get(i);
+                for (Entry<K, V> targetEntry : bucket) {
                     ArrayList<Entry<K, V>> targetBucket = getBucketByKey(targetEntry.key, newBuckets);
                     targetBucket.add(targetEntry);
                 }
@@ -102,35 +103,7 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
 
         }
         buckets = newBuckets;
-        System.out.println(Arrays.toString(buckets));
     }
-
-//    @Override
-//    public Iterator iterator() {
-//        int currentBucket = 0;
-//        int currentEntry = 0;
-//        int currentElement = 0;
-//
-//        return new Iterator() {
-//
-//            private int currentBucket = 0;
-//            private int currentEntry = 0;
-//
-//            @Override
-//            public boolean hasNext() {
-//                return currentElement < size;
-//            }
-//
-//            @Override
-//            public V next() {
-//            }
-//
-//            @Override
-//            public void remove() {
-//
-//            }
-//        };
-//    }
 
     private ArrayList<Entry<K, V>> getBucketByKey(K key) {
         return getBucketByKey(key, buckets);
@@ -143,16 +116,14 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
         return bucketsArray[Math.abs(key.hashCode() % capacity)];
     }
 
-
     private static class Entry<K, V> {
         K key;
         V value;
 
-        public Entry(K key, V value) {
+        private Entry(K key, V value) {
             this.key = key;
             this.value = value;
         }
-
 
         @Override
         public String toString() {
@@ -163,5 +134,4 @@ public class HashMap<K, V> implements Map<K, V>, Iterable {
         }
     }
 }
-
 
