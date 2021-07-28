@@ -1,4 +1,4 @@
-package com.andrew.DecoratorsIO;
+package com.andrew.decoratorsIO;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.andrew.DecoratorsIO;
+package com.andrew.decoratorsIO;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,6 @@
-package com.andrew.DecoratorsIO;
+package com.andrew.decoratorsIO;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public class BufferedOutputStream extends OutputStream {
