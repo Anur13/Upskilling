@@ -76,8 +76,9 @@ class HashMapTest {
         assertEquals("13", entry.getValue());
 
         entry = (Map.Entry<Integer, String>) iterator.next();
-        assertEquals("13", entry.getValue());
+        assertEquals("100", entry.getValue());
+
         entry = (Map.Entry<Integer, String>) iterator.next();
-        assertEquals("13", entry.getValue());
+        assertEquals("30", entry.getValue());
     }
 }
