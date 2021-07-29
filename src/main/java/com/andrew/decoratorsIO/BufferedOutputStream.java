@@ -1,9 +1,15 @@
 package com.andrew.decoratorsIO;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class BufferedOutputStream extends OutputStream {
+    private final int DEFAULT_BUFFER_SIZE = 10;
+    private InputStream input;
+    private byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+
+
     @Override
     public void write(int b) throws IOException {
 
