@@ -36,7 +36,6 @@ public class ByteArrayInputStreamTest {
         bytesRead = byteArrayInputStream.read(test);
         assertEquals(5, bytesRead);
         assertArrayEquals(bytesOfContent, test);
-
     }
 
     @Test
